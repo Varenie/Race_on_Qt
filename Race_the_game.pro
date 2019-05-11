@@ -25,11 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        ai_car.cpp \
         main.cpp \
         player_car.cpp \
         widget.cpp
 
 HEADERS += \
+        ai_car.h \
         player_car.h \
         widget.h
 

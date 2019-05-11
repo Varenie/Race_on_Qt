@@ -11,7 +11,7 @@ class Player_car: public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
-    explicit Player_car(QObject *parebt = 0);
+    explicit Player_car(QObject *parent = 0);
     ~Player_car();
 signals:
 
