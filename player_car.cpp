@@ -39,6 +39,7 @@ void Player_car::slotGameTimer()
     if(GetAsyncKeyState(VK_DOWN))
         setPos(mapToParent(0,5));
 
+
     //проверка на выход за карту
     if(this->x() - 10 < -250){
            this->setX(-240);       // слева
