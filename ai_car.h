@@ -12,8 +12,10 @@ class AI_car: public QObject, public QGraphicsItem
 public:
     explicit AI_car(QObject *parent = 0);
     ~AI_car();
+signals:
+
 public slots:
-    void slotGameTimerAI();
+    void slotGameTimerAI();//слот движения машин компьютера
 protected:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

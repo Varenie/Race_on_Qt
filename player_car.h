@@ -14,7 +14,8 @@ public:
     explicit Player_car(QObject *parent = 0);
     ~Player_car();
 signals:
-
+    void signalCheck(QGraphicsItem *item);
+    void signalGameOver();//сигнал конца игры
 public slots:
     void slotGameTimer();//обработка перемещений
 

@@ -26,11 +26,13 @@ private:
     QTimer *timer;// таймер для обновления перемещения объекта
     QTimer *createCar;//таймер для создания машин компьютера
     QTimer *moveCar;//для перемещения машины
+
     QList<QGraphicsItem *> cars;//список с машинами компьютера
 
 private slots:
     void slotDeleteCar(QGraphicsItem * item);//функция удаления машин
     void slotCreateCar();//функция созадния машин
+    void slotGameOver();//функция конца игры
 };
 
 #endif // WIDGET_H

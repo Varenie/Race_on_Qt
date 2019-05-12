@@ -1,7 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include <QCoreApplication>
-
+#include <QMessageBox>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -40,10 +40,14 @@ Widget::Widget(QWidget *parent) :
     createCar = new QTimer();//для машины компьютера
     connect(createCar, &QTimer::timeout, this, &Widget::slotCreateCar);
     createCar->start(2000);
+
+    connect(player_car, &Player_car::signalCheck, this, &Widget::slotDeleteCar);
+    connect(player_car, &Player_car::signalGameOver, this, &Widget::slotGameOver);
 }
 
 void Widget::slotCreateCar()
 {
+
     AI_car *car = new AI_car();//создание машины
     scene->addItem(car);
     car->setPos((qrand() % (251)) * ((qrand()%2 == 1)?1:-1),-230);
@@ -53,6 +57,8 @@ void Widget::slotCreateCar()
     moveCar = new QTimer();
     connect(moveCar, &QTimer::timeout, car, &AI_car::slotGameTimerAI);
     moveCar->start(1000/20);
+
+
 }
 
 void Widget::slotDeleteCar(QGraphicsItem *item)
@@ -61,11 +67,46 @@ void Widget::slotDeleteCar(QGraphicsItem *item)
     {
         if(car == item)
         {
-            scene->removeItem(car);
-            cars.removeOne(item);
-            delete car;
+            timer->stop();
+            createCar->stop();
+            moveCar->stop();
+            QMessageBox::warning(this, "GAME OVER", "Sorry, but you crashed the car");
+
+            disconnect(timer, &QTimer::timeout, player_car, &Player_car::slotGameTimer);
+            disconnect(createCar, &QTimer::timeout, this, &Widget::slotCreateCar);
+
+
+            player_car->deleteLater();
+
+            foreach (QGraphicsItem *car, cars)
+            {
+                    scene->removeItem(car);
+                    cars.removeOne(car);
+                    delete car;
+            }
         }
     }
+}
+
+void Widget::slotGameOver()
+{
+   timer->stop();
+   createCar->stop();
+   moveCar->stop();
+   QMessageBox::warning(this, "GAME OVER", "Sorry, but you crashed the car");
+
+   disconnect(timer, &QTimer::timeout, player_car, &Player_car::slotGameTimer);
+   disconnect(createCar, &QTimer::timeout, this, &Widget::slotCreateCar);
+
+   player_car->deleteLater();
+
+   foreach (QGraphicsItem *car, cars)
+   {
+           scene->removeItem(car);
+           cars.removeOne(car);
+           delete car;
+   }
+
 }
 
 Widget::~Widget()

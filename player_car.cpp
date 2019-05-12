@@ -29,6 +29,17 @@ void Player_car::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
 void Player_car::slotGameTimer()
 {
+    //создание поля видимости перед машиной игрока
+    QList<QGraphicsItem*> foundItems = scene()->items(QPolygonF()
+                              << mapToScene(0,0) << mapToScene(-20,-20) << mapToScene(20, -20));
+
+    foreach (QGraphicsItem *item, foundItems)//проверяем все элементы, один из которых сама машина игрока
+    {
+        if (item == this)
+            continue;
+        emit signalCheck(item);
+    }
+
     //движения машинки
     if(GetAsyncKeyState(VK_LEFT))
         setPos(mapToParent(-5,0));
@@ -41,18 +52,26 @@ void Player_car::slotGameTimer()
 
 
     //проверка на выход за карту
-    if(this->x() - 10 < -250){
-           this->setX(-240);       // слева
-       }
-       if(this->x() + 10 > 250){
-           this->setX(240);        // справа
-       }
-
-       if(this->y() - 10 < -250){
-           this->setY(-240);       // сверху
-       }
-       if(this->y() + 10 > 250){
-           this->setY(240);        // снизу
-       }
+    if(this->x() - 10 < -250)
+    {
+        this->setX(-240);       // слева
+        emit signalGameOver();
+    }
+    if(this->x() + 10 > 250)
+    {
+        this->setX(240);        // справа
+        emit signalGameOver();
+    }
+    if(this->y() - 10 < -250)
+    {
+        this->setY(-240);       // сверху
+        emit signalGameOver();
+    }
+    if(this->y() + 10 > 250)
+    {
+        this->setY(240);        // снизу
+        emit signalGameOver();
+    }
 }
+
 
